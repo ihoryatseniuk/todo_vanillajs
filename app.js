@@ -16,7 +16,7 @@ const addTodo = (e) => {
   const newTodo = document.createElement("li");
   newTodo.classList.add("todo-item");
   newTodo.innerText = todoInput.value;
-  saveLocalTodos(todoInput.value);
+  saveLocalTodos(todoInput.value, todoDiv.className);
   todoDiv.appendChild(newTodo);
   //Reset input form
   todoInput.value = "";
@@ -46,6 +46,7 @@ const deleteTodo = (e) => {
   }
   if (item.classList[0] === "complete-btn") {
     item.parentElement.classList.toggle("completed");
+    completeLocalsTodos(item.parentElement.innerText);
   }
 };
 
@@ -85,14 +86,37 @@ const filterTodo = (e) => {
   });
 };
 
-const saveLocalTodos = (todo) => {
+const saveLocalTodos = (todo, todoClass) => {
   let todos;
   if (localStorage.getItem("todos") === null) {
     todos = [];
   } else {
     todos = JSON.parse(localStorage.getItem("todos"));
   }
-  todos.push(todo);
+  todos.push({ value: todo, todoClass: todoClass });
+  localStorage.setItem("todos", JSON.stringify(todos));
+};
+
+const completeLocalsTodos = (item) => {
+  let todos;
+  let index;
+  todos = JSON.parse(localStorage.getItem("todos"));
+
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i].value === item) {
+      index = i;
+    }
+  }
+
+  if (todos[index].todoClass.includes("completed")) {
+    todos[index].todoClass = String(todos[index].todoClass).replace(
+      " completed",
+      ""
+    );
+  } else {
+    todos[index].todoClass = String(todos[index].todoClass) + " completed";
+  }
+
   localStorage.setItem("todos", JSON.stringify(todos));
 };
 
@@ -114,16 +138,16 @@ const getTodos = () => {
     todos = [];
   } else {
     todos = JSON.parse(localStorage.getItem("todos"));
-    console.log(todos);
   }
 
   todos.forEach((todo) => {
+    let newTodoClasses = todo.todoClass.split(" ");
+    console.log(newTodoClasses);
     const todoDiv = document.createElement("div");
-    todoDiv.classList.add("todo");
-    console.log("dera");
+    todoDiv.classList.add(...newTodoClasses);
 
     const newTodo = document.createElement("li");
-    newTodo.innerText = todo;
+    newTodo.innerText = todo.value;
     newTodo.classList.add("todo-item");
     todoDiv.appendChild(newTodo);
     todoInput.value = "";
