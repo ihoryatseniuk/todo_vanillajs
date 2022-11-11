@@ -3,9 +3,10 @@ const todoInput = document.querySelector(".todo-input");
 const todoButton = document.querySelector(".todo-button");
 const todoList = document.querySelector(".todo-list");
 const selectBtn = document.querySelector(".select-btn");
+const filterOption = document.querySelector(".options");
+const selectBtnText = document.querySelector(".filter");
 
 //Functions
-
 const addTodo = (e) => {
   e.preventDefault();
   //Creating list Container
@@ -54,7 +55,36 @@ const openList = () => {
   selectBtn.classList.toggle("active");
 };
 
+const filterTodo = (e) => {
+  document.querySelector(".content").classList.toggle("active");
+  selectBtnText.innerText = e.target.innerText;
+  const todos = todoList.childNodes;
+  todos.forEach((todo) => {
+    switch (e.target.innerText) {
+      case "All":
+        todo.style.display = "flex";
+
+        break;
+      case "Completed":
+        if (todo.classList.contains("completed")) {
+          todo.style.display = "flex";
+        } else {
+          todo.style.display = "none";
+        }
+        break;
+      case "Uncompleted":
+        if (!todo.classList.contains("completed")) {
+          todo.style.display = "flex";
+        } else {
+          todo.style.display = "none";
+        }
+        break;
+    }
+  });
+};
+
 //Event listeners
 todoButton.addEventListener("click", addTodo);
 todoList.addEventListener("click", deleteTodo);
 selectBtn.addEventListener("click", openList);
+filterOption.addEventListener("click", filterTodo);

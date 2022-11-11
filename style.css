@@ -68,13 +68,13 @@ form {
   box-shadow: -1px 0px black;
   opacity: 0;
   z-index: -1;
-  transition: opacity 1s, z-index 1s;
+  transition: opacity 0.5s, z-index 0.5s;
 }
 
 .active {
   z-index: 1;
   opacity: 1;
-  transition: opacity 1s, z-index 0s;
+  transition: opacity 0.5s, z-index 0.5s;
 }
 
 .content ul {
@@ -136,20 +136,6 @@ form {
 .select-btn.active .right-icon {
   transform: rotate(315deg);
 }
-
-/* .select-btn::after {
-  content: "";
-  background-image: url("./images/chevron-down-solid.svg");
-  background-repeat: no-repeat;
-  height: 25px;
-  width: 29px;
-  transform: rotate(180deg);
-  transition: transform 1s;
-} */
-
-/* .select-btn.active::after {
-  transform: rotate(360deg);
-} */
 
 .select-btn.span {
   font-size: 24px;
